@@ -1,0 +1,152 @@
+use abc_bank;
+create table bank_info(
+name varchar(20) not null unique,
+swift_id int(10) primary key,
+ac_url varchar(100),
+bank_help varchar(500),
+loan_url varchar(100));
+desc bank_info;
+
+create table branch(
+id int(20) primary key,
+name varchar(20) not null,
+IFSC_code varchar(20) not null unique,
+address varchar(50),
+branch_contact int(15));
+desc branch;
+
+create table account(
+ type_id varchar(50) primary key,
+ ac_type varchar(20) not null,
+ discription varchar(200),
+ min_balance float(10));
+desc account;
+
+create table loan(
+id varchar(20) primary key,
+loan_type varchar(20) not null,
+description varchar(500),
+eligibility varchar(20) not null,
+interest_rate float(5));
+desc loan;
+
+create table customer(
+account_no int(15) primary key,
+name varchar(20) not null,
+DOB date not null,
+phone_no int(15) not null,
+username varchar(20) not null,
+password varchar(20) not null,
+balance float(10) not null,
+branch_id int(20) references branch(id),
+loan_id varchar(20) references loan(id),
+type_id varchar(50) references account(type_id),
+aadhar_no bigint(20),
+pan_no varchar(20)
+);
+desc customer;
+
+create table employee(
+empId int(15) primary key,
+name varchar(20) not null,
+DOB date not null,
+phone_no int(15) not null,
+username varchar(20) not null,
+password varchar(20) not null,
+emp_role varchar(20) not null);
+desc employee;
+
+create table agent(
+agent_id int(15) primary key,
+name varchar(20) not null,
+DOB date not null,
+phone_no int(15) not null,
+username varchar(20) not null,
+password varchar(20) not null,
+branch_id int(10) references branch(branch_id));
+desc agent;
+select * from agent;
+
+create table transaction(
+id int(20) primary key,
+trans_date date,
+credit float(10),
+debit float(10),
+account_no int(15) references customer(account_no));
+desc transaction;
+desc bank_info;
+
+insert into bank_info values('ICICI',11111,'www.icicibank.com','if any query please contact the near branch','iciciapplicationloan.com');
+insert into bank_info values('HDFC',22222,'www.hdfcbank.com','if any query please contact the near branch','hdfcapplicationloan.com');
+insert into bank_info values('CITYBANK',33333,'www.citybank.com','if any query please contact the near branch','citybankapplicationloan.com');
+select * from bank_info;
+
+insert into branch values(00001234,'Hubli','00001234HHHH','keshwapur',9876541);
+insert into branch values(00002345,'Belgam','00001234BBBB','vidyanagar',8974566);
+insert into branch values(00003456,'Bangalore','00001234CCCC','maratalli',789456);
+insert into branch values(00004567,'Mangalore','00001234MMMM','beach',654987);
+insert into branch values(00005678,'Gadag','00001234GGGG','bus stand',7778984);
+select * from branch;
+
+desc account;
+insert into account values('S0001','saving','its only for personal use not for bussiness',500);
+insert into account values('C0001','current','its for bussiness as well as personal',5000);
+select * from account;
+
+desc loan;
+alter table loan modify eligibility varchar(100);
+insert into loan values('H0001','Home Loan','Home loan fecilitates to purchase or construct home','income more than 1000000',8.8);
+insert into loan values('C0001','Car Loan','Car loan fecilitates to purchase car','income more than 500000',12.3);
+insert into loan values('S0001','Student Loan','Student loan fecilitates for education to student','no need of income',5.8);
+select * from loan;
+
+desc customer;
+insert into customer values(123456,'Rachayya Kallimath','1996-07-10',8971039,'rachoti','123456',1000.0,00001234,'S0001','S0001',59085078,'KJI87687');
+insert into customer values(234567,'aaaa','1994-12-06',8147804,'aaaaa','456789',11250,00002345,'H0001','S0001',08796970,'KJGJH0798');
+insert into customer values(345678,'Shashidhar E','1993-10-05',8874545,'ballari','127756',5000,00003456,'S0001','C0001',907876558,'JHFJ8099');
+insert into customer values(456789,'Amar Mahamuni','1996-05-10',8197383,'gunda','134556',12000,00003456,'S0001','S0001',0789679807,'GIJG9876');
+insert into customer values(567890,'Arun Hamali','1996-07-10',8050401,'hamali','132545',5600,00001234,'C0001','C0001',968686909,'JHG98776');
+insert into customer values(678901,'Arvind VG','1996-07-10',7760330,'apya','325666',1000,00001234,'C0001','S0001',980685970,'IGGO98768');
+select * from customer;
+
+insert into employee values(000111,'Rachayya Kallimath','1996-07-10',897103,'rachoti','123456','superUser');
+insert into employee values(000112,'Sagar Benakal','1997-10-01',784578,'sagar',123456,'superUser');
+insert into employee values(000113,'Rachayya Kallimath','1996-08-11',567894,'rachoti',123456,'admin');
+insert into employee values(000114,'Arun Rathod','1996-04-01',805040,'arun',123456,'admin');
+select * from employee;
+desc employee;
+
+
+select * from agent;
+
+desc transaction;
+insert into transaction values(000111,'2019-10-10',500.0,0.0,123456);
+insert into transaction values(000112,'2019-10-10',500.0,0.0,123456);
+
+insert into agent values(12,'Raj','1996/05/20',32543676,'raj','raj',12345);
+insert into agent values(13,'Abhi','1998/07/03',89465115,'abhi','abhi',23456);
+
+insert into agent values(14,'Nikhil','1998/12/08',98843623,'niks','niks',23456);
+
+
+create table admin(
+empId BigInt(15),
+name varchar(20),
+DOB date,
+phone_num bigint(12),
+username varchar(20),
+password varchar(20),
+role varchar(20)
+)
+
+insert into admin values(1001,'Jesh','1997-04-29',97392909,'jesh','jesh','admin');
+insert into admin values(1002,'Trupthi','1997-09-09',98455900,'trupthi','trupthi','admin');
+
+
+select * from admin;
+select * from account;
+select * from transaction;
+select * from customer;
+select * from loan;
+select count(*) from employee
+
